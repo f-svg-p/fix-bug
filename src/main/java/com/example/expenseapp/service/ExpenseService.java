@@ -114,6 +114,10 @@ public class ExpenseService {
             throw new IllegalArgumentException(messages.get("validation.details.required"));
         }
 
+        if (existing.getReceiptImages().isEmpty()) {
+            throw new IllegalArgumentException(messages.get("validation.receipt.required"));
+        }
+
         existing.setStatus(ExpenseStatus.PENDING);
         existing.setSubmittedAt(LocalDateTime.now());
         assertUpdated(expenseMapper.updateById(existing));
