@@ -99,12 +99,17 @@ public class ApprovalService {
     public Expense reject(Integer expenseId, LoginUser approver, Integer version, String comment) {
         Expense expense = requirePendingExpenseForApproval(expenseId, approver, version);
         requireCurrentStep(expense);
+        String normalized = normalizeComment(comment);
+
+        if (normalized == null) {
+            throw new IllegalArgumentException(messages.get("validation.comment.required"));
+        }
 
         approvalHistoryRecorder.record(
                 expenseId,
                 approver.getUserId(),
                 ApprovalAction.REJECT,
-                normalizeComment(comment));
+                normalized);
 
         expense.setStatus(ExpenseStatus.REJECTED);
         assertUpdated(expenseMapper.updateById(expense));
