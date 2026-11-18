@@ -20,19 +20,19 @@
                             <div class="mb-3">
                                 <label for="currentPassword" class="form-label" th:text="#{password.current}">現在のパスワード</label>
                                 <input type="password" class="form-control" id="currentPassword"
-                                       th:field="*{currentPassword}" required>
+                                       th:field="*{currentPassword}">
                                 <div class="text-danger small" th:errors="*{currentPassword}"></div>
                             </div>
                             <div class="mb-3">
                                 <label for="newPassword" class="form-label" th:text="#{password.new}">新しいパスワード</label>
                                 <input type="password" class="form-control" id="newPassword"
-                                       th:field="*{newPassword}" required minlength="8">
+                                       th:field="*{newPassword}">
                                 <div class="text-danger small" th:errors="*{newPassword}"></div>
                             </div>
                             <div class="mb-4">
                                 <label for="confirmPassword" class="form-label" th:text="#{password.confirm}">確認</label>
                                 <input type="password" class="form-control" id="confirmPassword"
-                                       th:field="*{confirmPassword}" required>
+                                       th:field="*{confirmPassword}">
                                 <div class="text-danger small" th:errors="*{confirmPassword}"></div>
                             </div>
 
