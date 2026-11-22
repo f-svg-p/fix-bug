@@ -36,19 +36,7 @@ public class ReceiptController {
                 .findFirst()
                 .orElse(null);
         if (image == null) {
-            Path leftover = receiptStorageService.findFirstFile(expenseId);
-            if (leftover == null) {
-                return ResponseEntity.notFound().build();
-            }
-            Resource leftoverResource = new UrlResource(leftover.toUri());
-            if (!leftoverResource.exists() || !leftoverResource.isReadable()) {
-                return ResponseEntity.notFound().build();
-            }
-            String leftoverName = leftover.getFileName().toString();
-            return ResponseEntity.ok()
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + leftoverName + "\"")
-                    .contentType(receiptStorageService.mediaTypeFor(leftoverName))
-                    .body(leftoverResource);
+            return ResponseEntity.notFound().build();
         }
 
         Path filePath = receiptStorageService.resolvePath(image.getFilePath());
