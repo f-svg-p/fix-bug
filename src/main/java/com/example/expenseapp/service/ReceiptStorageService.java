@@ -13,7 +13,6 @@ import java.nio.file.Path;
 import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Stream;
 
 @Service
 public class ReceiptStorageService {
@@ -81,21 +80,6 @@ public class ReceiptStorageService {
             case "jpg", "jpeg" -> MediaType.IMAGE_JPEG;
             default -> MediaType.APPLICATION_OCTET_STREAM;
         };
-    }
-
-    public Path findFirstFile(Integer expenseId) {
-        if (expenseId == null) {
-            return null;
-        }
-        Path expenseDir = receiptBaseDir.resolve(String.valueOf(expenseId)).normalize();
-        if (!expenseDir.startsWith(receiptBaseDir) || !Files.isDirectory(expenseDir)) {
-            return null;
-        }
-        try (Stream<Path> paths = Files.list(expenseDir)) {
-            return paths.filter(Files::isRegularFile).findFirst().orElse(null);
-        } catch (IOException ignored) {
-            return null;
-        }
     }
 
     public void deleteExpenseFiles(Integer expenseId) {
