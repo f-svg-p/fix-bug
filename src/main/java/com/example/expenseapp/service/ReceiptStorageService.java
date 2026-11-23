@@ -13,6 +13,7 @@ import java.nio.file.Path;
 import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 @Service
 public class ReceiptStorageService {
@@ -62,6 +63,12 @@ public class ReceiptStorageService {
         if (!StringUtils.hasText(filePath)) {
             return;
         }
+        try {
+            Path resolved = resolvePath(filePath);
+            Files.deleteIfExists(resolved);
+        } catch (IOException e) {
+            throw new IllegalArgumentException(messages.get("validation.file.path"), e);
+        }
     }
 
     public Path resolvePath(String filePath) {
@@ -85,6 +92,18 @@ public class ReceiptStorageService {
     public void deleteExpenseFiles(Integer expenseId) {
         if (expenseId == null) {
             return;
+        }
+        Path expenseDir = receiptBaseDir.resolve(String.valueOf(expenseId)).normalize();
+        if (!expenseDir.startsWith(receiptBaseDir) || !Files.isDirectory(expenseDir)) {
+            return;
+        }
+        try (Stream<Path> paths = Files.list(expenseDir)) {
+            for (Path file : paths.toList()) {
+                Files.deleteIfExists(file);
+            }
+            Files.deleteIfExists(expenseDir);
+        } catch (IOException e) {
+            throw new IllegalArgumentException(messages.get("validation.file.path"), e);
         }
     }
 
