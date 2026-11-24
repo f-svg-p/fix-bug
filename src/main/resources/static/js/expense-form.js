@@ -1,23 +1,13 @@
 (function () {
     const container = document.getElementById('detail-rows');
     const addButton = document.getElementById('add-detail-row');
-    if (!container || !addButton) {
+    const template = document.getElementById('detail-row-template');
+    if (!container || !addButton || !template) {
         return;
     }
 
     addButton.addEventListener('click', function () {
-        const firstRow = container.querySelector('.detail-row');
-        if (!firstRow) {
-            return;
-        }
-        const clone = firstRow.cloneNode(true);
-        clone.querySelectorAll('input, select, textarea').forEach(function (input) {
-            if (input.tagName === 'SELECT') {
-                input.selectedIndex = 0;
-            } else {
-                input.value = '';
-            }
-        });
+        const clone = template.content.firstElementChild.cloneNode(true);
         container.appendChild(clone);
         reindexRows();
     });
@@ -27,10 +17,7 @@
         if (!button) {
             return;
         }
-        const rows = container.querySelectorAll('.detail-row');
-        if (rows.length <= 1) {
-            return;
-        }
+
         button.closest('.detail-row').remove();
         reindexRows();
     });
