@@ -33,7 +33,6 @@
                         <i class="bi bi-plus-lg me-1"></i><span th:text="#{expense.detail.add}">明細を追加</span>
                     </button>
                 </div>
-
                 <div id="detail-rows">
                     <div class="detail-row" th:each="detail, stat : *{details}">
                         <div class="row g-3">
@@ -76,6 +75,46 @@
                         </div>
                     </div>
                 </div>
+
+                <template id="detail-row-template">
+                    <div class="detail-row">
+                        <div class="row g-3">
+                            <div class="col-md-3">
+                                <label class="form-label" th:text="#{expense.field.expenseDate}">利用日</label>
+                                <input type="date" class="form-control" name="details[0].expenseDate" required>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label" th:text="#{expense.field.category}">科目</label>
+                                <select class="form-select" name="details[0].categoryId" required>
+                                    <option value="">選択してください</option>
+                                    <option th:each="cat : ${categories}" th:value="${cat.categoryId}"
+                                            th:text="${cat.categoryName}"></option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label" th:text="#{expense.field.taxRate}">税率</label>
+                                <select class="form-select" name="details[0].taxId" required>
+                                    <option value="">選択</option>
+                                    <option th:each="tax : ${taxRates}" th:value="${tax.taxId}"
+                                            th:text="${tax.description}"></option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label" th:text="#{expense.field.amount}">金額</label>
+                                <input type="number" class="form-control" min="0" step="1" name="details[0].amount" required>
+                            </div>
+                            <div class="col-md-2 d-flex align-items-end">
+                                <button type="button" class="btn btn-outline-danger btn-sm remove-detail-row w-100">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label" th:text="#{expense.field.memo}">メモ</label>
+                                <input type="text" class="form-control" maxlength="255" name="details[0].memo">
+                            </div>
+                        </div>
+                    </div>
+                </template>
                 <div class="text-danger small" th:if="${#fields.hasErrors('details')}" th:errors="*{details}"></div>
 
                 <div class="d-flex flex-wrap gap-2 mt-4 pt-3 border-top">
