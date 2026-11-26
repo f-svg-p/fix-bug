@@ -106,7 +106,7 @@ public class ExpenseAuthorizationService {
                                 && current.getStepNumber() != null
                                 && (upcomingOnly
                                 ? route.getStepNumber() > current.getStepNumber()
-                                : route.getStepNumber() == current.getStepNumber())))
+                                : route.getStepNumber() <= current.getStepNumber())))
                 .orElse(false);
     }
 
